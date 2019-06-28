@@ -33,11 +33,11 @@ scalacOptions ++= Seq(
   "-Xfatal-warnings",
 )
 
-lazy val core = (project in file("core"))
+lazy val core = (project in file("."))
   .configs(IntegrationTest)
   .settings(
     Defaults.itSettings,
-    name := "nomad-http4s-core",
+    name := "nomad-http4s",
     resolvers ++= Seq(
       "CompStak Releases".at("s3://compstak-maven.s3-us-east-1.amazonaws.com/releases"),
       "CompStak Snapshots".at("s3://compstak-maven.s3-us-east-1.amazonaws.com/snapshots"),

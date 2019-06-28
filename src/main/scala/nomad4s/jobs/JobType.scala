@@ -15,4 +15,7 @@ object JobType {
     Decoder.decodeString.emap(
       s => (Batch :: Service :: System :: Nil).find(_.tag === s).toRight(s"Invalid job type: $s")
     )
+
+  implicit val encoderForJobType: Encoder[JobType] =
+    Encoder.encodeString.contramap(_.tag)
 }

@@ -1,0 +1,169 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@0.0.5
+  aws-cli: circleci/aws-cli@0.1.6
+
+_defaults: &defaults
+  machine:
+    docker_layer_caching: true
+  working_directory: ~/repo
+  environment:
+    # Customize the JVM maximum heap limit
+    JVM_OPTS: -Xmx3000m
+    SBT_OPTS: -Xmx2000m
+    TERM: dumb
+
+workflows:
+  version: 2
+  development:
+    jobs:
+      - build:
+          context: aws-deploy
+      - test:
+          context: aws-deploy
+          requires:
+            - build
+      - style:
+          context: aws-deploy
+          requires:
+            - build
+      # - integration:
+      #     context: aws-deploy
+      #     requires:
+      #       - build
+      - publish:
+          context: aws-deploy
+          filters:
+            branches:
+              ignore:
+                - master
+          requires:
+            - build
+            - test
+            # - integration
+      - request-release:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
+            - test
+            # - integration
+      - release:
+          context: aws-deploy
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - request-release
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - run:
+          name: Compile
+          command: cat /dev/null | sbt test:compile
+      - save_cache:
+          paths:
+            - ~/.ivy2/cache
+            - ~/.m2
+            - ~/.sbt
+            - target
+          key: v1-dependencies-{{ checksum "build.sbt" }}
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: docker info
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - aws-ecr/ecr-login:
+          region: $AWS_REGION
+      - run:
+          name: Run standard test suite
+          command: cat /dev/null | sbt test
+
+  style:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: docker info
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - aws-ecr/ecr-login:
+          region: $AWS_REGION
+      - run:
+          name: Run standard test suite
+          command: cat /dev/null | sbt scalafmtCheck
+
+  integration:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: docker info
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - aws-ecr/ecr-login:
+          region: $AWS_REGION
+      - run:
+          name: Start Docker Compose environment
+          command: cat /dev/null | sbt dockerComposeUp
+      - run:
+          command: docker ps -a
+      - run:
+          name: yawn...
+          command: sleep 5
+      - run:
+          name: Run integration test suite
+          command: cat /dev/null | sbt it:test
+      - run:
+          name: Stop Docker Compose environment
+          command: cat /dev/null | sbt dockerComposeStop
+
+  publish:
+    <<: *defaults
+    steps:
+      - aws-cli/install
+      - aws-cli/configure
+      - checkout
+      - aws-ecr/ecr-login:
+          region: $AWS_REGION
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - run: cat /dev/null | sbt docker:publish
+
+  release:
+    <<: *defaults
+    steps:
+      - aws-cli/install
+      - aws-cli/configure
+      - checkout
+      - aws-ecr/ecr-login:
+          region: $AWS_REGION
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.sbt" }}
+            - v1-dependencies-
+      - run: cat /dev/null | sbt "release with-defaults"

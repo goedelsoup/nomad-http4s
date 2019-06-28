@@ -12,4 +12,6 @@ object JobStatus {
   implicit val decoderForJobStatus: Decoder[JobStatus] =
     Decoder.decodeString.emap(s => (Running :: Nil).find(_.tag === s).toRight(s"Invalid status: $s"))
 
+  implicit val encoderForJobStatus: Encoder[JobStatus] =
+    Encoder.encodeString.contramap(_.tag)
 }

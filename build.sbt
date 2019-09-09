@@ -30,7 +30,7 @@ scalacOptions ++= Seq(
   "-language:postfixOps",
   "-feature",
   "-Ypartial-unification",
-  "-Xfatal-warnings",
+  "-Xfatal-warnings"
 )
 
 lazy val core = (project in file("."))
@@ -40,7 +40,7 @@ lazy val core = (project in file("."))
     name := "nomad-http4s",
     resolvers ++= Seq(
       "CompStak Releases".at("s3://compstak-maven.s3-us-east-1.amazonaws.com/releases"),
-      "CompStak Snapshots".at("s3://compstak-maven.s3-us-east-1.amazonaws.com/snapshots"),
+      "CompStak Snapshots".at("s3://compstak-maven.s3-us-east-1.amazonaws.com/snapshots")
     ),
     libraryDependencies ++= Seq(
       "io.circe" %% "circe-generic" % CirceVersion,
@@ -65,7 +65,7 @@ lazy val core = (project in file("."))
       "io.chrisdavenport" %% "epimetheus-log4cats" % "0.2.1",
       "org.scalactic" %% "scalactic" % "3.0.5",
       "org.scalatest" %% "scalatest" % "3.0.5" % Test,
-      "org.scalatest" %% "scalatest" % "3.0.5" % IntegrationTest,
+      "org.scalatest" %% "scalatest" % "3.0.5" % IntegrationTest
     ),
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6"),
     addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0"),
@@ -83,5 +83,5 @@ lazy val core = (project in file("."))
     publishArtifact in Test := false,
     pomIncludeRepository := { _ =>
       false
-    },
+    }
   )

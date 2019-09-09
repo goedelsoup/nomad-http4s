@@ -21,7 +21,7 @@ final case class ReadResult[P, M](
   metadata: M,
   createIndex: Int,
   modifyIndex: Int,
-  jobModifyIndex: Int,
+  jobModifyIndex: Int
 )
 
 object ReadResult {

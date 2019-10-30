@@ -68,18 +68,19 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "build.sbt" }}
+            - v2-dependencies-
       - run:
           name: Compile
           command: cat /dev/null | sbt test:compile
       - save_cache:
           paths:
+            - ~/.cache/coursier
             - ~/.ivy2/cache
             - ~/.m2
             - ~/.sbt
             - target
-          key: v1-dependencies-{{ checksum "build.sbt" }}
+          key: v2-dependencies-{{ checksum "build.sbt" }}
 
   test:
     <<: *defaults
@@ -89,8 +90,8 @@ jobs:
           command: docker info
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "build.sbt" }}
+            - v2-dependencies-
       - aws-ecr/ecr-login:
           region: $AWS_REGION
       - run:
@@ -105,8 +106,8 @@ jobs:
           command: docker info
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "build.sbt" }}
+            - v2-dependencies-
       - aws-ecr/ecr-login:
           region: $AWS_REGION
       - run:
@@ -121,8 +122,8 @@ jobs:
           command: docker info
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "build.sbt" }}
+            - v2-dependencies-
       - aws-ecr/ecr-login:
           region: $AWS_REGION
       - run:
@@ -150,8 +151,8 @@ jobs:
           region: $AWS_REGION
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "build.sbt" }}
+            - v2-dependencies-
       - run: cat /dev/null | sbt docker:publish
 
   release:
@@ -164,6 +165,6 @@ jobs:
           region: $AWS_REGION
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "build.sbt" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "build.sbt" }}
+            - v2-dependencies-
       - run: cat /dev/null | sbt "release with-defaults"

@@ -82,8 +82,8 @@ object Allocations {
   final case class TaskState(
     state: String,
     failed: Boolean,
-    startedAt: String,
-    finishedAt: String,
+    startedAt: Option[String],
+    finishedAt: Option[String],
     events: List[Event]
   )
 
@@ -94,8 +94,8 @@ object Allocations {
         (
           c.downField("State").as[String],
           c.downField("Failed").as[Boolean],
-          c.downField("StartedAt").as[String],
-          c.downField("FinishedAt").as[String],
+          c.downField("StartedAt").as[Option[String]],
+          c.downField("FinishedAt").as[Option[String]],
           c.downField("Events").as[List[Event]]
         ).mapN(TaskState.apply)
     }

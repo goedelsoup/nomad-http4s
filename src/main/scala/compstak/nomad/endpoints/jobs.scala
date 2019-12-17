@@ -124,19 +124,6 @@ object jobs {
       parseJob
     )
 
-  /*
-  def parse[F[_]: Sync](
-    auth: Auth,
-    planJob: PlanJob
-  ): Kleisli[F, Client[F], Job] =
-    RequestConstructor.runRequestWithBody[F, PlanJob, Job](
-      auth,
-      Method.POST,
-      uri"/v1/jobs" / planJob.job.id / "plan",
-      planJob
-    )
-   */
-
   def revert[F[_]: Sync](
     auth: Auth,
     revertJob: RevertJob

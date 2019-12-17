@@ -9,7 +9,6 @@ import io.circe.syntax._
 
 object Jobs {
 
-  // todo ADT?
   final case class PortDef(
     label: String,
     value: Int

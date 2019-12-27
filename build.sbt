@@ -7,7 +7,7 @@ import ReleaseTransformations._
 ThisBuild / scalaVersion := "2.12.8"
 ThisBuild / organization := "compstak"
 
-val CirceVersion = "0.12.2"
+val CirceVersion = "0.12.3"
 val Http4sVersion = "0.21.0-M6"
 
 scalacOptions ++= Seq(
@@ -35,10 +35,10 @@ lazy val core = (project in file("."))
       "org.http4s" %% "http4s-client" % Http4sVersion,
       "org.http4s" %% "http4s-circe" % Http4sVersion,
       "org.http4s" %% "http4s-dsl" % Http4sVersion,
-      "org.scalatest" %% "scalatest" % "3.0.5" % Test
+      "org.scalatest" %% "scalatest" % "3.0.8" % Test
     ),
     addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full),
-    addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0"),
+    addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1"),
     testFrameworks += new TestFramework("com.github.agourlay.cornichon.framework.CornichonFramework"),
     scalafmtOnCompile := true,
     initialCommands in console := """

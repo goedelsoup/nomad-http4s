@@ -7,7 +7,7 @@ import ReleaseTransformations._
 ThisBuild / scalaVersion := "2.12.8"
 ThisBuild / organization := "compstak"
 
-val CirceVersion = "0.12.2"
+val CirceVersion = "0.12.3"
 val Http4sVersion = "0.21.0-M6"
 
 scalacOptions ++= Seq(

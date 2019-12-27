@@ -38,7 +38,7 @@ lazy val core = (project in file("."))
       "org.scalatest" %% "scalatest" % "3.0.5" % Test
     ),
     addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full),
-    addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0"),
+    addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1"),
     testFrameworks += new TestFramework("com.github.agourlay.cornichon.framework.CornichonFramework"),
     scalafmtOnCompile := true,
     initialCommands in console := """

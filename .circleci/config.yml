@@ -6,7 +6,7 @@ orbs:
 
 _defaults: &defaults
   machine:
-    docker_layer_caching: true
+    docker_layer_caching: false
   working_directory: ~/repo
   environment:
     # Customize the JVM maximum heap limit

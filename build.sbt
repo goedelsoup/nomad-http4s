@@ -4,7 +4,7 @@ import com.typesafe.sbt.packager.linux.LinuxPlugin.autoImport._
 
 import ReleaseTransformations._
 
-ThisBuild / scalaVersion := "2.12.8"
+ThisBuild / scalaVersion := "2.12.10"
 ThisBuild / organization := "compstak"
 
 val CirceVersion = "0.12.3"

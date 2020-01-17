@@ -3,7 +3,7 @@ addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "2.1.158")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.3.0")
 addSbtPlugin("com.tapad" % "sbt-docker-compose" % "1.0.35")
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.12")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 addSbtPlugin("com.itv" % "sbt-scalapact" % "2.3.12")
 
 addSbtPlugin("com.frugalmechanic" % "fm-sbt-s3-resolver" % "0.19.0")

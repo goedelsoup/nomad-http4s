@@ -21,14 +21,20 @@ scalacOptions ++= Seq(
   "-Xfatal-warnings"
 )
 
+credentials += Credentials(
+  "Sonatype Nexus Repository Manager",
+  "nexus.compstak.com",
+  sys.env.get("NEXUS_USERNAME").getOrElse(""),
+  sys.env.get("NEXUS_PASSWORD").getOrElse("")
+)
+
 lazy val core = (project in file("."))
   .configs(IntegrationTest)
   .settings(
     Defaults.itSettings,
     name := "nomad-http4s",
     resolvers ++= Seq(
-      "CompStak Releases".at("s3://compstak-maven.s3-us-east-1.amazonaws.com/releases"),
-      "CompStak Snapshots".at("s3://compstak-maven.s3-us-east-1.amazonaws.com/snapshots")
+      "CompStak Nexus Releases".at("https://nexus.compstak.com/repository/maven-group")
     ),
     libraryDependencies ++= Seq(
       "io.circe" %% "circe-core" % CirceVersion,
@@ -46,8 +52,8 @@ lazy val core = (project in file("."))
                                     |import nomad._
         """.stripMargin,
     publishTo := {
-      val prefix = if (isSnapshot.value) "snapshots" else "releases"
-      Some("CompStak".at(s"s3://compstak-maven.s3-us-east-1.amazonaws.com/$prefix"))
+      val suffix = if (isSnapshot.value) "snapshots" else "releases"
+      Some("CompStak".at(s"https://nexus.compstak.com/repository/maven-$suffix"))
     },
     publishMavenStyle := true,
     publishArtifact in Test := false,

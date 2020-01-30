@@ -21,6 +21,13 @@ scalacOptions ++= Seq(
   "-Xfatal-warnings"
 )
 
+credentials += Credentials(
+  "Sonatype Nexus Repository Manager",
+  "nexus.compstak.com",
+  sys.env.get("NEXUS_USERNAME").getOrElse(""),
+  sys.env.get("NEXUS_PASSWORD").getOrElse("")
+)
+
 lazy val core = (project in file("."))
   .configs(IntegrationTest)
   .settings(

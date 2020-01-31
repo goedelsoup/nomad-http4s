@@ -713,6 +713,41 @@ object Jobs {
     }
   }
 
+  case class DispatchedJob(
+    id: String,
+    evaluation: String,
+    evalCreateIndex: Int,
+    jobCreateIndex: Int,
+    index: Int
+  )
+
+  object DispatchedJob {
+
+    implicit val decoderForDispatchedJob = new Decoder[DispatchedJob] {
+      def apply(c: HCursor): Decoder.Result[DispatchedJob] =
+        (
+          c.downField("DispatchedJobID").as[String],
+          c.downField("EvalID").as[String],
+          c.downField("EvalCreateIndex").as[Int],
+          c.downField("JobCreateIndex").as[Int],
+          c.downField("Index").as[Int]
+        ).mapN(DispatchedJob.apply)
+    }
+
+    implicit val encoderForDispatchedJob = new Encoder[DispatchedJob] {
+      def apply(a: DispatchedJob): Json =
+        Json
+          .obj(
+            "DispatchedJobID" -> a.id.asJson,
+            "EvalID" -> a.evaluation.asJson,
+            "EvalCreateIndex" -> a.evalCreateIndex.asJson,
+            "JobCreateIndex" -> a.jobCreateIndex.asJson,
+            "Index" -> a.index.asJson
+          )
+          .dropNullValues
+    }
+  }
+
   case class TaskSummary(
     queued: Int,
     complete: Int,

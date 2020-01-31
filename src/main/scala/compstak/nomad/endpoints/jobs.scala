@@ -53,8 +53,8 @@ object jobs {
     auth: Auth,
     job: String,
     dispatchJob: DispatchJob
-  ): Kleisli[F, Client[F], Job] =
-    RequestConstructor.runRequestWithBody[F, DispatchJob, Job](
+  ): Kleisli[F, Client[F], DispatchedJob] =
+    RequestConstructor.runRequestWithBody[F, DispatchJob, DispatchedJob](
       auth,
       Method.POST,
       uri"/v1/job" / job / "dispatch",

@@ -8,7 +8,7 @@ ThisBuild / scalaVersion := "2.12.10"
 ThisBuild / organization := "compstak"
 
 val CirceVersion = "0.13.0"
-val Http4sVersion = "0.21.0"
+val Http4sVersion = "0.21.1"
 
 scalacOptions ++= Seq(
   "-deprecation",

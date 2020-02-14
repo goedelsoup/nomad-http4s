@@ -46,18 +46,18 @@ object jobs {
     RequestConstructor.runRequestWithNoBody[F, List[Deployment]](
       auth,
       Method.GET,
-      uri"/v1/jobs" / id / "deployments"
+      uri"/v1/job" / id / "deployments"
     )
 
   def dispatch[F[_]: Sync](
     auth: Auth,
     job: String,
     dispatchJob: DispatchJob
-  ): Kleisli[F, Client[F], Job] =
-    RequestConstructor.runRequestWithBody[F, DispatchJob, Job](
+  ): Kleisli[F, Client[F], DispatchedJob] =
+    RequestConstructor.runRequestWithBody[F, DispatchJob, DispatchedJob](
       auth,
       Method.POST,
-      uri"/v1/jobs" / job / "dispatch",
+      uri"/v1/job" / job / "dispatch",
       dispatchJob
     )
 
@@ -68,7 +68,7 @@ object jobs {
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.POST,
-      uri"/v1/jobs" / job / "periodic" / "force"
+      uri"/v1/job" / job / "periodic" / "force"
     )
 
   def evaluations[F[_]: Sync](
@@ -78,7 +78,7 @@ object jobs {
     RequestConstructor.runRequestWithNoBody[F, List[Evaluation]](
       auth,
       Method.GET,
-      uri"/v1/jobs" / id / "evaluations"
+      uri"/v1/job" / id / "evaluations"
     )
 
   def job[F[_]: Sync](
@@ -88,7 +88,7 @@ object jobs {
     RequestConstructor.runRequestWithNoBody[F, Job](
       auth,
       Method.GET,
-      uri"/v1/jobs" / id
+      uri"/v1/job" / id
     )
 
   def latestDeployment[F[_]: Sync](
@@ -98,7 +98,7 @@ object jobs {
     RequestConstructor.runRequestWithNoBody[F, Deployment](
       auth,
       Method.GET,
-      uri"/v1/jobs" / id / "deployment"
+      uri"/v1/job" / id / "deployment"
     )
 
   def list[F[_]: Sync](
@@ -142,7 +142,7 @@ object jobs {
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.DELETE,
-      uri"/v1/jobs" / job
+      uri"/v1/job" / job
     )
 
   def summary[F[_]: Sync](
@@ -152,7 +152,7 @@ object jobs {
     RequestConstructor.runRequestWithNoBody[F, Summary](
       auth,
       Method.GET,
-      uri"/v1/jobs" / id / "summary"
+      uri"/v1/job" / id / "summary"
     )
 
   def validate[F[_]: Sync](
@@ -173,6 +173,6 @@ object jobs {
     RequestConstructor.runRequestWithNoBody[F, List[Job]](
       auth,
       Method.GET,
-      uri"/v1/jobs" / id / "versions"
+      uri"/v1/job" / id / "versions"
     )
 }

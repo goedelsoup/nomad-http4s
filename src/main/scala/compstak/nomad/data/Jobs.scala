@@ -964,7 +964,7 @@ object Jobs {
     implicit val decoderForListing = new Decoder[Listing] {
       def apply(c: HCursor): Decoder.Result[Listing] =
         (
-          c.downField("JobID").as[String],
+          c.downField("ID").as[String],
           c.downField("ParentID").as[Option[String]],
           c.downField("Name").as[String],
           c.downField("Datacenters").as[List[String]],

@@ -104,7 +104,7 @@ object jobs {
   def list[F[_]: Sync](
     auth: Auth,
     prefix: Option[String]
-  ): Kleisli[F, Client[F], List[Job]] =
+  ): Kleisli[F, Client[F], List[Listing]] =
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.GET,

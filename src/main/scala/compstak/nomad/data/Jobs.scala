@@ -970,7 +970,7 @@ object Jobs {
           c.downField("Datacenters").as[List[String]],
           c.downField("Type").as[JobType],
           c.downField("Priority").as[Int],
-          c.downField("Parameterized").as[Boolean],
+          c.downField("ParameterizedJob").as[Boolean],
           c.downField("Stop").as[Boolean],
           c.downField("Status").as[String],
           c.downField("JobSummary").as[Summary],

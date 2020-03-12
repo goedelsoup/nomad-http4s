@@ -109,7 +109,7 @@ object jobs {
       auth,
       Method.GET,
       prefix.fold(uri"/v1/jobs") { p =>
-        uri"/v1/jobs" +? p
+        uri"/v1/jobs".withQueryParam("prefix", p)
       }
     )
 

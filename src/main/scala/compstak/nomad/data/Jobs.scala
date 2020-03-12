@@ -941,4 +941,44 @@ object Jobs {
           .dropNullValues
     }
   }
+
+  final case class Listing(
+    id: String,
+    parent: Option[String],
+    name: String,
+    datacenters: List[String],
+    `type`: JobType,
+    priority: Int,
+    parameterized: Boolean,
+    stop: Boolean,
+    status: String,
+    summary: Summary,
+    createIndex: Long,
+    modifyIndex: Long,
+    jobModifyIndex: Long,
+    submitTime: Long
+  )
+
+  object Listing {
+
+    implicit val decoderForListing = new Decoder[Listing] {
+      def apply(c: HCursor): Decoder.Result[Listing] =
+        (
+          c.downField("JobID").as[String],
+          c.downField("ParentID").as[Option[String]],
+          c.downField("Name").as[String],
+          c.downField("Datacenters").as[List[String]],
+          c.downField("Type").as[JobType],
+          c.downField("Priority").as[Int],
+          c.downField("Parameterized").as[Boolean],
+          c.downField("Stop").as[Boolean],
+          c.downField("Status").as[String],
+          c.downField("JobSummary").as[Summary],
+          c.downField("CreateIndex").as[Long],
+          c.downField("ModifyIndex").as[Long],
+          c.downField("JobModifyIndex").as[Long],
+          c.downField("SubmitTime").as[Long]
+        ).mapN(Listing.apply)
+    }
+  }
 }

@@ -981,4 +981,28 @@ object Jobs {
         ).mapN(Listing.apply)
     }
   }
+
+  final case class Stopped(
+    evaluation: String,
+    evalCreateIndex: Long,
+    jobModifyIndex: Long,
+    index: Long,
+    lastContact: Long,
+    knownLeader: Boolean
+  )
+
+  object Stopped {
+
+    implicit val decoderForStopped = new Decoder[Stopped] {
+      def apply(c: HCursor): Decoder.Result[Stopped] =
+        (
+          c.downField("EvalID").as[String],
+          c.downField("EvalCreateIndex").as[Long],
+          c.downField("JobModifyIndex").as[Long],
+          c.downField("Index").as[Long],
+          c.downField("LastContact").as[Long],
+          c.downField("KnownLeader").as[Boolean]
+        ).mapN(Stopped.apply)
+    }
+  }
 }

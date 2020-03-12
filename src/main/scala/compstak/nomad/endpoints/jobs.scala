@@ -138,7 +138,7 @@ object jobs {
   def stop[F[_]: Sync](
     auth: Auth,
     job: String
-  ): Kleisli[F, Client[F], Evaluation] =
+  ): Kleisli[F, Client[F], Stopped] =
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.DELETE,

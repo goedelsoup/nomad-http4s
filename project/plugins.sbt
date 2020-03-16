@@ -1,4 +1,4 @@
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.5.2")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.7.0")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "2.1.164")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.3.0")

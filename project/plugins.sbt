@@ -1,6 +1,6 @@
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.5.2")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
-addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "2.1.164")
+addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "2.1.169")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.3.0")
 addSbtPlugin("com.tapad" % "sbt-docker-compose" % "1.0.35")
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.12")

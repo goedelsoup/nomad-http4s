@@ -32,16 +32,6 @@ workflows:
       #     context: aws-deploy
       #     requires:
       #       - build
-      - publish:
-          context: aws-deploy
-          filters:
-            branches:
-              ignore:
-                - master
-          requires:
-            - build
-            - test
-            # - integration
       - request-release:
           type: approval
           filters:
@@ -96,7 +86,7 @@ jobs:
           region: $AWS_REGION
       - run:
           name: Run standard test suite
-          command: cat /dev/null | sbt test
+          command: cat /dev/null | sbt +test
 
   style:
     <<: *defaults
@@ -140,21 +130,6 @@ jobs:
       - run:
           name: Stop Docker Compose environment
           command: cat /dev/null | sbt dockerComposeStop
-
-  publish:
-    <<: *defaults
-    steps:
-      - aws-cli/install
-      - aws-cli/configure
-      - checkout
-      - aws-ecr/ecr-login:
-          region: $AWS_REGION
-      - restore_cache:
-          keys:
-            - v2-dependencies-{{ checksum "build.sbt" }}
-            - v2-dependencies-
-      - run: cat /dev/null | sbt docker:publish
-
   release:
     <<: *defaults
     steps:
@@ -167,4 +142,4 @@ jobs:
           keys:
             - v2-dependencies-{{ checksum "build.sbt" }}
             - v2-dependencies-
-      - run: cat /dev/null | sbt "release with-defaults"
+      - run: cat /dev/null | sbt "release cross with-defaults"

@@ -1,10 +1,10 @@
-import com.typesafe.sbt.packager.docker._
-import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._
-import com.typesafe.sbt.packager.linux.LinuxPlugin.autoImport._
+lazy val scala212 = "2.12.10"
+lazy val scala213 = "2.13.2"
+lazy val supportedScalaVersions = List(scala213, scala212)
 
 import ReleaseTransformations._
 
-ThisBuild / scalaVersion := "2.12.10"
+ThisBuild / scalaVersion := scala212
 ThisBuild / organization := "compstak"
 
 val CirceVersion = "0.13.0"
@@ -17,7 +17,6 @@ scalacOptions ++= Seq(
   "-language:higherKinds",
   "-language:postfixOps",
   "-feature",
-  "-Ypartial-unification",
   "-Xfatal-warnings"
 )
 
@@ -36,6 +35,7 @@ lazy val core = (project in file("."))
     resolvers ++= Seq(
       "CompStak Nexus Releases".at("https://nexus.compstak.com/repository/maven-group")
     ),
+    crossScalaVersions := supportedScalaVersions,
     libraryDependencies ++= Seq(
       "io.circe" %% "circe-core" % CirceVersion,
       "org.http4s" %% "http4s-client" % Http4sVersion,

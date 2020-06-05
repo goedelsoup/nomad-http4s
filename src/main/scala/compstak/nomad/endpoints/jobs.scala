@@ -104,12 +104,12 @@ object jobs {
   def list[F[_]: Sync](
     auth: Auth,
     prefix: Option[String]
-  ): Kleisli[F, Client[F], List[Job]] =
+  ): Kleisli[F, Client[F], List[Listing]] =
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.GET,
       prefix.fold(uri"/v1/jobs") { p =>
-        uri"/v1/jobs" +? p
+        uri"/v1/jobs".withQueryParam("prefix", p)
       }
     )
 
@@ -138,7 +138,7 @@ object jobs {
   def stop[F[_]: Sync](
     auth: Auth,
     job: String
-  ): Kleisli[F, Client[F], Evaluation] =
+  ): Kleisli[F, Client[F], Stopped] =
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.DELETE,

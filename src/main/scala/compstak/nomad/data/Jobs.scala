@@ -941,4 +941,68 @@ object Jobs {
           .dropNullValues
     }
   }
+
+  final case class Listing(
+    id: String,
+    parent: Option[String],
+    name: String,
+    datacenters: List[String],
+    `type`: JobType,
+    priority: Int,
+    parameterized: Boolean,
+    stop: Boolean,
+    status: String,
+    summary: Summary,
+    createIndex: Long,
+    modifyIndex: Long,
+    jobModifyIndex: Long,
+    submitTime: Long
+  )
+
+  object Listing {
+
+    implicit val decoderForListing = new Decoder[Listing] {
+      def apply(c: HCursor): Decoder.Result[Listing] =
+        (
+          c.downField("ID").as[String],
+          c.downField("ParentID").as[Option[String]],
+          c.downField("Name").as[String],
+          c.downField("Datacenters").as[List[String]],
+          c.downField("Type").as[JobType],
+          c.downField("Priority").as[Int],
+          c.downField("ParameterizedJob").as[Boolean],
+          c.downField("Stop").as[Boolean],
+          c.downField("Status").as[String],
+          c.downField("JobSummary").as[Summary],
+          c.downField("CreateIndex").as[Long],
+          c.downField("ModifyIndex").as[Long],
+          c.downField("JobModifyIndex").as[Long],
+          c.downField("SubmitTime").as[Long]
+        ).mapN(Listing.apply)
+    }
+  }
+
+  final case class Stopped(
+    evaluation: String,
+    evalCreateIndex: Long,
+    jobModifyIndex: Long,
+    index: Long,
+    lastContact: Long,
+    knownLeader: Boolean
+  )
+
+  object Stopped {
+
+    implicit val decoderForStopped = new Decoder[Stopped] {
+      def apply(c: HCursor): Decoder.Result[Stopped] =
+        (
+          c.downField("EvalID").as[String],
+          c.downField("EvalCreateIndex").as[Long],
+          c.downField("JobModifyIndex").as[Long],
+          c.downField("Index").as[Long],
+          c.downField("LastContact").as[Long],
+          c.downField("KnownLeader").as[Boolean]
+        ).mapN(Stopped.apply)
+    }
+  }
 }

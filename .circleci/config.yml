@@ -19,9 +19,9 @@ workflows:
   development:
     jobs:
       - build:
-        filters:
-          tags:
-            only: /^v.*/
+          filters:
+            tags:
+              only: /^v.*/
       - publish-snapshot:
           context: nexus
           requires:

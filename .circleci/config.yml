@@ -51,7 +51,7 @@ jobs:
             - v2-dependencies-
       - run:
           name: Compile
-          command: cat /dev/null | sbt validate
+          command: cat /dev/null | sbt +validate
       - save_cache:
           paths:
             - ~/.cache/coursier

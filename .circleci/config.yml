@@ -61,21 +61,6 @@ jobs:
             - target
           key: v2-dependencies-{{ checksum "build.sbt" }}
 
-  test:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          command: docker info
-      - restore_cache:
-          keys:
-            - v2-dependencies-{{ checksum "build.sbt" }}
-            - v2-dependencies-
-      - aws-ecr/ecr-login:
-          region: $AWS_REGION
-      - run:
-          name: Run standard test suite
-          command: cat /dev/null | sbt +test
 
   publish:
     <<: *defaults

@@ -56,8 +56,8 @@ jobs:
           name: Compile
           command: |
             export NOMAD_HOST=$(hostname -I | tr -d '\n') && \
-            echo "$NOMAD_HOST" && \
-            ./.circleci/bin/wait-for-it.sh -t 300 $NOMAD_HOST:14646/v1/status/leader && \
+            echo "${NOMAD_HOST[0]}" && \
+            ./.circleci/bin/wait-for-it.sh -t 300 ${NOMAD_HOST[0]}:14646/v1/status/leader && \
             cat /dev/null | sbt +validate
       - save_cache:
           paths:

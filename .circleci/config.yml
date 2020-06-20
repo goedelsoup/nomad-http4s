@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Download and run Nomad
           command: |
-            docker run -p 4646:4646 multani/nomad agent -dev
+            docker run -d -p 4646:4646 multani/nomad agent -dev
       - run:
           name: Compile
           command: |

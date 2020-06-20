@@ -70,9 +70,6 @@ jobs:
             - v2-dependencies-{{ checksum "build.sbt" }}
             - v2-dependencies-
       - run:
-          name: Download and run Nomad
-          command: ./.circleci/bin/start-nomad.sh
-      - run:
           name: Compile
           command: |
             ./.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader && \

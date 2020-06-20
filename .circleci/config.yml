@@ -74,9 +74,6 @@ jobs:
             curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb
             dpkg -i sbt-$SBT_VERSION.deb
             rm sbt-$SBT_VERSION.deb
-            apt-get update
-            apt-get install -y python-pip git
-            pip install awscli
             apt-get clean && apt-get autoclean
       - restore_cache:
           keys:
@@ -85,8 +82,7 @@ jobs:
       - run:
           name: Compile
           command: |
-            curl -Ls https://git.io/sbt > ~/bin/sbt && chmod 0755 ~/bin/sbt && \
-            cat /dev/null | ~/bin/sbt +validate
+            cat /dev/null | sbt +validate
       - save_cache:
           paths:
             - ~/.cache/coursier

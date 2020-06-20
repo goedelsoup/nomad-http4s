@@ -61,7 +61,7 @@ jobs:
             ./nomad agent --dev &
       - run:
           name: Wait for Nomad to be available
-          command: /.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader
+          command: ./.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader
       - run:
           name: Compile
           command: cat /dev/null | sbt +validate

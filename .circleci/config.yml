@@ -50,18 +50,12 @@ jobs:
             - v2-dependencies-{{ checksum "build.sbt" }}
             - v2-dependencies-
       - run:
-          name: Install unzip
-          command: |
-            sudo apt-get install unzip
-      - run:
           name: Download and run Nomad
           command: |
-            curl -O https://releases.hashicorp.com/nomad/0.11.3/nomad_0.11.3_linux_amd64.zip && \
-            unzip nomad_0.11.3_linux_amd64.zip
+            docker run -p 4646:4646 multani/nomad
       - run:
           name: Compile
           command: |
-            ./nomad agent --dev & \
             ./.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader && \
             cat /dev/null | sbt +validate
       - save_cache:

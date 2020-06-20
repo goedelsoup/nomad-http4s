@@ -20,7 +20,7 @@ object allocations {
   def alloc[F[_]: Sync](
     auth: Auth,
     id: String
-  ): Kleisli[F, Client[F], List[Alloc]] =
+  ): Kleisli[F, Client[F], Alloc] =
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.GET,
@@ -38,24 +38,27 @@ object allocations {
 
   def restart[F[_]: Sync](
     auth: Auth,
-    id: String
+    id: String,
+    task: String
   ): Kleisli[F, Client[F], Unit] =
-    RequestConstructor.runRequestWithNoBody(
+    RequestConstructor.runRequestWithBodyWithoutResponse(
       auth,
-      Method.POST,
-      uri"/v1/allocation" / id / "restart"
+      Method.PUT,
+      uri"/v1/client/allocation" / id / "restart",
+      Json.obj("Task" -> task.asJson)
     )
 
   def signal[F[_]: Sync](
     auth: Auth,
     id: String,
+    task: String,
     signal: String
   ): Kleisli[F, Client[F], Unit] =
     RequestConstructor.runRequestWithBody(
       auth,
       Method.POST,
-      uri"/v1/allocation" / id / "signal",
-      Json.obj("Signal" -> signal.asJson)
+      uri"/v1/client/allocation" / id / "signal",
+      Json.obj("Task" -> task.asJson, "Signal" -> signal.asJson)
     )
 
   def stop[F[_]: Sync](

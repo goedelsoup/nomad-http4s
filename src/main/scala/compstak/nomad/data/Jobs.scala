@@ -793,9 +793,10 @@ object Jobs {
   case class Summary(
     jobId: String,
     summary: Map[String, TaskSummary],
-    children: Children,
+    children: Option[Children],
     createIndex: Int,
-    modifyIndex: Int
+    modifyIndex: Int,
+    namespace: String
   )
 
   object Summary {
@@ -805,9 +806,10 @@ object Jobs {
         (
           c.downField("JobID").as[String],
           c.downField("Summary").as[Map[String, TaskSummary]],
-          c.downField("Children").as[Children],
+          c.downField("Children").as[Option[Children]],
           c.downField("CreateIndex").as[Int],
-          c.downField("ModifyIndex").as[Int]
+          c.downField("ModifyIndex").as[Int],
+          c.downField("Namespace").as[String]
         ).mapN(Summary.apply)
     }
   }
@@ -1003,6 +1005,28 @@ object Jobs {
           c.downField("LastContact").as[Long],
           c.downField("KnownLeader").as[Boolean]
         ).mapN(Stopped.apply)
+    }
+  }
+
+  final case class VersionSummary(
+    diffs: Option[String],
+    index: Int,
+    knownLeader: Boolean,
+    lastContact: Int,
+    versions: List[Job]
+  )
+
+  object VersionSummary {
+
+    implicit val decoderForVersionSummary = new Decoder[VersionSummary] {
+      def apply(c: HCursor): Decoder.Result[VersionSummary] =
+        (
+          c.downField("Diffs").as[Option[String]],
+          c.downField("Index").as[Int],
+          c.downField("KnownLeader").as[Boolean],
+          c.downField("LastContact").as[Int],
+          c.downField("Versions").as[List[Job]]
+        ).mapN(VersionSummary.apply)
     }
   }
 }

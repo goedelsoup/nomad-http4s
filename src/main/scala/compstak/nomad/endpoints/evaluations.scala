@@ -22,7 +22,7 @@ object evaluations {
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.GET,
-      uri"/v1/evaluations" / id / "allocations"
+      uri"/v1/evaluation" / id / "allocations"
     )
 
   def evaluation[F[_]: Sync](
@@ -32,7 +32,7 @@ object evaluations {
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.GET,
-      uri"/v1/evaluations" / id
+      uri"/v1/evaluation" / id
     )
 
   def list[F[_]: Sync](

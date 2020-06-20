@@ -16,7 +16,7 @@ object system {
   def forceGarbageCollection[F[_]: Sync](
     auth: Auth
   ): Kleisli[F, Client[F], Unit] =
-    RequestConstructor.runRequestWithNoBody(
+    RequestConstructor.runRequestWithNoBodyWithoutResponse(
       auth,
       Method.PUT,
       uri"/v1/system/gc"
@@ -25,7 +25,7 @@ object system {
   def reconcileSummaries[F[_]: Sync](
     auth: Auth
   ): Kleisli[F, Client[F], Unit] =
-    RequestConstructor.runRequestWithNoBody(
+    RequestConstructor.runRequestWithNoBodyWithoutResponse(
       auth,
       Method.PUT,
       uri"/v1/system/reconcile/summaries"

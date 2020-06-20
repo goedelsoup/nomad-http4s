@@ -5,6 +5,7 @@ import cats.effect.Sync
 
 import compstak.nomad.Auth
 import compstak.nomad.data.Allocations.Alloc
+import compstak.nomad.data.Deployments._
 import compstak.nomad.data.Evaluations._
 import compstak.nomad.internals._
 import compstak.nomad.internals.NomadMedia._
@@ -38,7 +39,7 @@ object deployments {
   def deployment[F[_]: Sync](
     auth: Auth,
     id: String
-  ): Kleisli[F, Client[F], Evaluation] =
+  ): Kleisli[F, Client[F], Deployment] =
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.GET,
@@ -47,7 +48,7 @@ object deployments {
 
   def list[F[_]: Sync](
     auth: Auth
-  ): Kleisli[F, Client[F], List[Evaluation]] =
+  ): Kleisli[F, Client[F], List[Deployment]] =
     RequestConstructor.runRequestWithNoBody(
       auth,
       Method.GET,

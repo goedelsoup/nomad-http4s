@@ -43,6 +43,34 @@ object RequestConstructor {
     c.expect[B](req)
   }
 
+  def runRequestWithBodyWithoutResponse[F[_]: Sync, A](
+    auth: Auth,
+    method: Method,
+    extendedUri: Uri,
+    body: A
+  )(implicit AD: EntityEncoder[F, A]): Kleisli[F, Client[F], Unit] =
+    runRequestWithoutResponse[F, A](auth, method, extendedUri, body.some)
+
+  def runRequestWithNoBodyWithoutResponse[F[_]: Sync](
+    auth: Auth,
+    method: Method,
+    extendedUri: Uri
+  ): Kleisli[F, Client[F], Unit] =
+    runRequestWithoutResponse[F, Unit](auth, method, extendedUri, None)
+
+  def runRequestWithoutResponse[F[_]: Sync, A](
+    auth: Auth,
+    method: Method,
+    extendedUri: Uri,
+    body: Option[A]
+  )(implicit AD: EntityEncoder[F, A]): Kleisli[F, Client[F], Unit] = Kleisli { c =>
+    val uri = Uri.resolve(baseUrl(auth), extendedUri)
+    val baseReq = Request[F](method = method, uri = uri)
+      .withHeaders(extraHeaders(auth))
+    val req = body.fold(baseReq)(a => baseReq.withEntity(a))
+    c.successful(req).void
+  }
+
   private[this] def baseUrl(auth: Auth): Uri =
     auth match {
       case Anonymous(uri)    => uri

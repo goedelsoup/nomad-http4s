@@ -169,8 +169,8 @@ object jobs {
   def versions[F[_]: Sync](
     auth: Auth,
     id: String
-  ): Kleisli[F, Client[F], List[Job]] =
-    RequestConstructor.runRequestWithNoBody[F, List[Job]](
+  ): Kleisli[F, Client[F], VersionSummary] =
+    RequestConstructor.runRequestWithNoBody[F, VersionSummary](
       auth,
       Method.GET,
       uri"/v1/job" / id / "versions"

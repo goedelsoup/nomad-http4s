@@ -9,7 +9,7 @@ object Deployments {
   final case class TaskGroup(
     autoRevert: Boolean,
     promoted: Boolean,
-    placedCanaries: List[String],
+    placedCanaries: Option[List[String]],
     desiredCanaries: Int,
     desiredTotal: Int,
     placedAllocs: Int,
@@ -24,7 +24,7 @@ object Deployments {
         (
           c.downField("AutoRevert").as[Boolean],
           c.downField("Promoted").as[Boolean],
-          c.downField("PlacedCanaries").as[List[String]],
+          c.downField("PlacedCanaries").as[Option[List[String]]],
           c.downField("DesiredCanaries").as[Int],
           c.downField("DesiredTotal").as[Int],
           c.downField("PlacedAllocs").as[Int],

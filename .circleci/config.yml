@@ -50,10 +50,10 @@ jobs:
             - v2-dependencies-{{ checksum "build.sbt" }}
             - v2-dependencies-
       - run:
-          name: Download Nomad
+          name: Download and run Nomad
           command: >
-            curl -O https://releases.hashicorp.com/nomad/0.11.3/nomad_0.11.3_linux_amd64.zip
-            unzip nomad_0.11.3_linux_amd64.zip
+            curl -O https://releases.hashicorp.com/nomad/0.11.3/nomad_0.11.3_linux_amd64.zip && \
+            unzip nomad_0.11.3_linux_amd64.zip && \
             ./nomad agent --dev
       - run:
           name: Compile

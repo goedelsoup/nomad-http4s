@@ -34,7 +34,6 @@ workflows:
           context: nexus
           requires:
             - build
-            - test
           filters:
             tags:
               only: /^v.*/

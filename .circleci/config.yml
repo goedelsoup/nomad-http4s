@@ -5,8 +5,28 @@ orbs:
   aws-cli: circleci/aws-cli@0.1.6
 
 _defaults: &defaults
-  machine:
-    docker_layer_caching: false
+  # machine:
+  #   docker_layer_caching: false
+  docker:
+    - image: openjdk:8
+    - image: multani/nomad
+      command:
+        - agent
+        - -dev
+      environment:
+        NOMAD_LOCAL_CONFIG: |
+          datacenter = "${REGION}"
+          region     = "${DATACENTER}"
+
+          data_dir = "/nomad/data/"
+
+          bind_addr = "0.0.0.0"
+
+          advertise {
+            http = "{{ GetPrivateIP }}:4646"
+            rpc  = "{{ GetPrivateIP }}:4647"
+            serf = "{{ GetPrivateIP }}:4648"
+          }
   working_directory: ~/repo
   environment:
     # Customize the JVM maximum heap limit
@@ -55,9 +75,7 @@ jobs:
       - run:
           name: Compile
           command: |
-            export NOMAD_HOST=$(hostname -I | tr -d '\n') && \
-            echo "${NOMAD_HOST%% *}" && \
-            ./.circleci/bin/wait-for-it.sh -t 300 ${NOMAD_HOST%% *}:14646/v1/status/leader && \
+            ./.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader && \
             cat /dev/null | sbt +validate
       - save_cache:
           paths:

@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Install unzip
           command: |
-            sudo apt-get unzip
+            sudo apt-get install unzip
       - run:
           name: Download and run Nomad
           command: |

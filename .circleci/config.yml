@@ -72,7 +72,7 @@ jobs:
       - run:
           name: Compile
           command: |
-            curl -Ls https://git.io/sbt > ~/bin/sbt && chmod 0755 ~/bin/sbt && \
+            curl -Ls https://git.io/sbt > /root/bin/sbt && chmod 0755 /root/bin/sbt && \
             cat /dev/null | sbt +validate
       - save_cache:
           paths:

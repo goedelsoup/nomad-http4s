@@ -72,7 +72,7 @@ jobs:
       - run:
           name: Compile
           command: |
-            ./.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader && \
+            curl -Ls https://git.io/sbt > ~/bin/sbt && chmod 0755 ~/bin/sbt && \
             cat /dev/null | sbt +validate
       - save_cache:
           paths:

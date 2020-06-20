@@ -60,6 +60,9 @@ jobs:
             unzip nomad_0.11.3_linux_amd64.zip && \
             ./nomad agent --dev &
       - run:
+          name: Snooze
+          command: sleep 15
+      - run:
           name: Compile
           command: cat /dev/null | sbt +validate
       - save_cache:

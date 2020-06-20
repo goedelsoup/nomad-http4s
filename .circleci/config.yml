@@ -53,11 +53,11 @@ jobs:
           name: Download and run Nomad
           command: |
           docker run \
-            -p 14646:4646 \
+            -p 4646:4646 \
             --privileged \
             -e NOMAD_LOCAL_CONFIG='
-          datacenter = "${REGION}"
-          region     = "${DATACENTER}"
+          datacenter = "$${REGION}"
+          region     = "$${DATACENTER}"
           
           data_dir = "/nomad/data/"
           

@@ -6,6 +6,8 @@ import cats.implicits._
 import io.circe.ACursor
 import io.circe.DecodingFailure
 
+import scala.util.Try
+
 package object data {
 
   def boolFromStringCursor(a: ACursor) =
@@ -17,9 +19,8 @@ package object data {
 
   def durationFromStringCursor(a: ACursor) =
     a.as[String].flatMap { str =>
-      str
-        .dropRight(1)
-        .toDoubleOption
+      val maybeNumeric = Try(str.dropRight(1).toDouble).toOption
+      maybeNumeric
         .toRight(DecodingFailure("Invalid numeric in intial position", a.history))
         .flatMap { numeric =>
           str.last match {

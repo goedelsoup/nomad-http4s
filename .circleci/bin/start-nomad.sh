@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-docker run \
+docker run -d \
   -p 4646:4646 \
   --privileged \
   -e NOMAD_LOCAL_CONFIG='

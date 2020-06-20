@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Compile
           command: |
-            ./.circleci/bin/wait-for-it.sh -t 300 $(hostname -I):14646/v1/status/leader && \
+            ./.circleci/bin/wait-for-it.sh -t 300 $(hostname -I | tr -d '\n'):14646/v1/status/leader && \
             cat /dev/null | sbt +validate
       - save_cache:
           paths:

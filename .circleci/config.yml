@@ -22,15 +22,10 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - test:
-          filters:
-            tags:
-              only: /^v.*/
       - publish-snapshot:
           context: nexus
           requires:
             - build
-            - test
           filters:
             branches:
               only:
@@ -56,6 +51,12 @@ jobs:
             - v2-dependencies-{{ checksum "build.sbt" }}
             - v2-dependencies-
       - run:
+          name: Download Nomad
+          command: >
+            curl -O https://releases.hashicorp.com/nomad/0.11.3/nomad_0.11.3_linux_amd64.zip
+            unzip nomad_0.11.3_linux_amd64.zip
+            ./nomad agent --dev
+      - run:
           name: Compile
           command: cat /dev/null | sbt +validate
       - save_cache:
@@ -66,25 +67,6 @@ jobs:
             - ~/.sbt
             - target
           key: v2-dependencies-{{ checksum "build.sbt" }}
-
-  test:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v2-dependencies-{{ checksum "build.sbt" }}
-            - v2-dependencies-
-      - run:
-          name: Download Nomad
-          command: >
-            curl -O https://releases.hashicorp.com/nomad/0.11.3/nomad_0.11.3_linux_amd64.zip
-            unzip nomad_0.11.3_linux_amd64.zip
-            ./nomad agent --dev &
-      - run:
-          name: Compile
-          command: cat /dev/null | sbt +test
-
 
   publish:
     <<: *defaults

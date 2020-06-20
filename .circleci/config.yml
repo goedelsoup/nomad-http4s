@@ -57,14 +57,13 @@ jobs:
           name: Download and run Nomad
           command: |
             curl -O https://releases.hashicorp.com/nomad/0.11.3/nomad_0.11.3_linux_amd64.zip && \
-            unzip nomad_0.11.3_linux_amd64.zip && \
-            ./nomad agent --dev &
-      - run:
-          name: Wait for Nomad to be available
-          command: ./.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader
+            unzip nomad_0.11.3_linux_amd64.zip
       - run:
           name: Compile
-          command: cat /dev/null | sbt +validate
+          command: |
+            ./nomad agent --dev & \
+            ./.circleci/bin/wait-for-it.sh -t 300 localhost:4646/v1/status/leader && \
+            cat /dev/null | sbt +validate
       - save_cache:
           paths:
             - ~/.cache/coursier

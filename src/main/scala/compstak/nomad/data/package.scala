@@ -19,13 +19,14 @@ package object data {
 
   def durationFromStringCursor(a: ACursor) =
     a.as[String].flatMap { str =>
-      val maybeNumeric = Try(str.dropRight(1).toDouble).toOption
+      val maybeNumeric = Try(str.reverse.dropWhile(!_.isDigit).reverse.toDouble).toOption
       maybeNumeric
         .toRight(DecodingFailure("Invalid numeric in intial position", a.history))
         .flatMap { numeric =>
-          str.last match {
-            case 's' => Duration.ofNanos((numeric * 1000000000).toLong).asRight
-            case _   => DecodingFailure("Failed to parse duration", a.history).asLeft
+          str.reverse.takeWhile(!_.isDigit).reverse match {
+            case "s"  => Duration.ofNanos((numeric * 1000000000).toLong).asRight
+            case "ms" => Duration.ofNanos((numeric * 1000000).toLong).asRight
+            case _    => DecodingFailure("Failed to parse duration", a.history).asLeft
           }
         }
     }

@@ -6,6 +6,7 @@ import compstak.nomad.data.jobs._
 
 import io.circe._
 import io.circe.syntax._
+import compstak.nomad.data.jobs.Driver.RawExec
 
 object Jobs {
 
@@ -260,7 +261,7 @@ object Jobs {
   final case class Resources(
     cpu: Int,
     memoryMb: Int,
-    networks: List[Network]
+    networks: Option[List[Network]]
   )
   object Resources {
 
@@ -269,7 +270,7 @@ object Jobs {
         (
           c.downField("CPU").as[Int],
           c.downField("MemoryMB").as[Int],
-          c.downField("Networks").as[List[Network]]
+          c.downField("Networks").as[Option[List[Network]]]
         ).mapN(Resources.apply)
     }
 
@@ -410,8 +411,11 @@ object Jobs {
           c.downField("Driver").as[Driver].flatMap { driver =>
             val cursor = c.downField("Config")
             driver match {
-              case Driver.Docker => cursor.as[DockerConfig]
-              case d             => Left(DecodingFailure(s"Driver $d not currently supported", cursor.history))
+              case Driver.Docker  => cursor.as[DockerConfig]
+              case Driver.Exec    => cursor.as[ExecConfig]
+              case Driver.RawExec => cursor.as[ExecConfig]
+              case Driver.Java    => cursor.as[JavaConfig]
+              case d              => Left(DecodingFailure(s"Driver $d not currently supported", cursor.history))
             }
           }: Decoder.Result[DriverConfig],
           c.downField("Services").as[Option[List[Service]]].map(_.getOrElse(List.empty)),

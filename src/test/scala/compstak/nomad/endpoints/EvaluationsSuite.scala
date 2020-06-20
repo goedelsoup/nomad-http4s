@@ -9,7 +9,7 @@ class EvaluationsSuite extends NomadSuite {
   "Evaluations" - {
     "get" in {
       evaluations
-        .evaluation[IO](auth, "74e9f36e-376c-c373-bea8-aa729fc266dd")
+        .evaluation[IO](auth, dispatchEval)
         .run(client)
         .map(_ => assert(true))
     }
@@ -23,7 +23,7 @@ class EvaluationsSuite extends NomadSuite {
 
     "allocs" in {
       evaluations
-        .allocs[IO](auth, "74e9f36e-376c-c373-bea8-aa729fc266dd")
+        .allocs[IO](auth, dispatchEval)
         .run(client)
         .map(_ => assert(true))
     }

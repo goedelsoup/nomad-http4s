@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 docker run -d \
-  -p 4646:4646 \
+  -p 14646:4646 \
   --privileged \
   -e NOMAD_LOCAL_CONFIG='
 datacenter = "${REGION}"

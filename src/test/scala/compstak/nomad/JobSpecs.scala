@@ -18,7 +18,7 @@ job "echo" {
   group "echo" {
 
     task "echo" {
-      driver = "exec"
+      driver = "raw_exec"
 
       config {
         command = "echo"
